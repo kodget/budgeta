@@ -1,4 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FinanceFlow
+
+A delightfully simple financial tracking application for Nigerian university students and young professionals. Built with intention, designed with empathy, crafted with precision.
+
+## Introduction
+
+FinanceFlow is a lightweight financial tracking application designed primarily for university students in Lagos and young individuals who want a simple way to manage their money without the complexity of traditional finance apps.
+
+The product idea emerged from a user survey conducted for requirement elicitation, where participants shared their current money management habits, frustrations with existing solutions, and their expectations for a better financial tracking system.
+
+The insights revealed several important patterns:
+
+- Many users do not track their finances at all
+- Some users rely on memory or receipts
+- Existing apps are perceived as too complicated
+- Users primarily want to know how much money they have left
+
+Because of these findings, FinanceFlow focuses on simplicity, speed, and visual clarity. Instead of overwhelming users with complex financial analytics, the app helps users quickly understand their financial situation and build a habit of tracking their spending.
+
+---
+
+## The Problem
+
+After conducting user research with Lagos university students, I discovered a critical insight:
+
+**"Most finance apps are too complicated. I just want to know how much money I have left."** — Survey Respondent
+
+Students don't need complex financial analytics. They need:
+
+- **Speed** — Log expenses in under 5 seconds
+- **Clarity** — See remaining balance at a glance
+- **Motivation** — Build tracking habits through gamification
+- **Context** — Nigerian Naira (₦), local spending patterns
+
+---
 
 ## Getting Started
 
@@ -8,29 +42,10 @@ First, run the development server:
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Built for an assessment. Designed for humans. Crafted with care.**
