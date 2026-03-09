@@ -15,8 +15,9 @@ import { AppIcon } from "../components/AppIcon";
 import { SimpleConfetti } from "../components/SimpleConfetti";
 import { useUserData } from "../hooks/useUserData";
 
-const displayFont: React.CSSProperties = { fontFamily: "'Syne', sans-serif" };
-const bodyFont: React.CSSProperties = { fontFamily: "'Space Grotesk', sans-serif" };
+// Remove inline font styles to use global fonts
+// const displayFont: React.CSSProperties = { fontFamily: "'Syne', sans-serif" };
+// const bodyFont: React.CSSProperties = { fontFamily: "'Space Grotesk', sans-serif" };
 
 function fmt(n: number) { return "₦" + n.toLocaleString("en-NG"); }
 
@@ -142,10 +143,10 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
           >
             <Wallet className="w-10 h-10 text-emerald-600" />
           </motion.div>
-          <h1 style={{ ...displayFont, color: "#0F172A", fontWeight: 800, fontSize: "1.5rem" }}>
-            Welcome to Budgeta, {userName}! 🎉
+          <h1 className="text-slate-900 font-bold text-2xl">
+            Welcome to Budgeta, {userName}!
           </h1>
-          <p className="text-gray-600 mt-2" style={{ ...bodyFont, fontSize: "0.95rem" }}>
+          <p className="text-gray-600 mt-2 text-sm">
             You're all set up! Let's start tracking your first transaction.
           </p>
         </div>
@@ -163,7 +164,7 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
                 <Plus className="w-6 h-6 text-emerald-600" />
               </div>
               <div>
-                <h3 style={{ ...displayFont, fontWeight: 700, fontSize: "1rem", color: "#0F172A" }}>
+                <h3 className="text-slate-900 font-bold text-base">
                   Add Your First Transaction
                 </h3>
                 <p className="text-gray-500">Start tracking your income and expenses</p>
@@ -188,7 +189,7 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
                 <AppIcon name="Target" size="lg" className="text-blue-600" />
               </div>
               <div>
-                <h3 style={{ ...displayFont, fontWeight: 700, fontSize: "1rem", color: "#0F172A" }}>
+                <h3 className="text-slate-900 font-bold text-base">
                   Customize Your Budget
                 </h3>
                 <p className="text-gray-500">Adjust your spending limits and categories</p>
@@ -207,17 +208,17 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
           transition={{ delay: 0.6 }}
           className="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-2xl p-6 border border-emerald-100"
         >
-          <h3 style={{ ...displayFont, fontWeight: 700, fontSize: "1rem", color: "#0F172A", marginBottom: "1rem" }}>
-            💡 Quick Tips to Get Started
+          <h3 className="text-slate-900 font-bold text-base mb-4">
+            <AppIcon name="Lightbulb" className="text-amber-500 mr-2" /> Quick Tips to Get Started
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              { icon: "⚡", title: "Log transactions daily", desc: "Build the habit of tracking every expense" },
-              { icon: "🎯", title: "Set realistic budgets", desc: "Start with achievable limits and adjust as needed" },
-              { icon: "🏆", title: "Earn rewards", desc: "Get coins for consistent tracking and meeting budgets" },
+              { icon: <AppIcon name="Bolt" className="text-blue-500" />, title: "Log transactions daily", desc: "Build the habit of tracking every expense" },
+              { icon: <AppIcon name="Bullseye" className="text-emerald-500" />, title: "Set realistic budgets", desc: "Start with achievable limits and adjust as needed" },
+              { icon: <AppIcon name="Trophy" className="text-amber-500" />, title: "Earn rewards", desc: "Get coins for consistent tracking and meeting budgets" },
             ].map((tip, i) => (
               <div key={i} className="text-center">
-                <div className="text-2xl mb-2">{tip.icon}</div>
+                <div className="text-2xl mb-2 flex justify-center">{tip.icon}</div>
                 <h4 style={{ fontWeight: 600, color: "#0F172A", marginBottom: "0.5rem" }}>{tip.title}</h4>
                 <p className="text-gray-600 text-sm">{tip.desc}</p>
               </div>
@@ -245,10 +246,10 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
     >
       <motion.div variants={cardVariant} className="flex items-center justify-between">
         <div>
-          <h1 style={{ ...displayFont, color: "#0F172A", fontWeight: 800, fontSize: "1.5rem" }}>
+          <h1 className="text-slate-900 font-bold text-2xl">
             {getGreeting()}, {userName}!
           </h1>
-          <p className="text-gray-500" style={{ ...bodyFont, fontSize: "0.9rem" }}>March 2026 · Week 1</p>
+          <p className="text-gray-500 text-sm">March 2026 · Week 1</p>
         </div>
       </motion.div>
 
@@ -419,7 +420,7 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <p style={{ fontWeight: 700, color: "#fff", fontSize: "1.15rem" }}>
-                Great job staying within budget, Tunde! · {streak} month streak
+                Great job staying within budget, {userName}! · {streak} month streak
               </p>
               <AppIcon name="Fire" size="lg" className="text-orange-500" />
             </div>
@@ -442,7 +443,7 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
           whileHover={{ y: -2 }}
           className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm"
         >
-          <h3 style={{ color: "#0F172A", marginBottom: "1rem" }}>Spending Breakdown</h3>
+          <h3 className="text-slate-900">Spending Breakdown</h3>
           {pieData.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-48 gap-2">
               <AppIcon name="ChartPie" size="3x" className="text-gray-300" />
@@ -481,7 +482,7 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
           className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm"
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 style={{ color: "#0F172A" }}>Budget Progress</h3>
+            <h3 className="text-slate-900">Budget Progress</h3>
             <span
               className="px-2 py-0.5 rounded-full"
               style={{ backgroundColor: globalStatus.bg, color: globalStatus.textColor, fontWeight: 600, fontSize: "0.95rem" }}
@@ -553,7 +554,7 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
           whileHover={{ y: -2 }}
           className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm"
         >
-          <h3 style={{ color: "#0F172A", marginBottom: "1rem" }}>Last 7 Days</h3>
+          <h3 className="text-slate-900 mb-4">Last 7 Days</h3>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={barData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
@@ -576,7 +577,7 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
         className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm"
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 style={{ color: "#0F172A" }}>Recent Transactions</h3>
+          <h3 className="text-slate-900">Recent Transactions</h3>
           <Link
             href="/transactions"
             className="flex items-center gap-1 text-emerald-600 hover:text-emerald-700 transition-colors"

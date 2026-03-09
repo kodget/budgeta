@@ -218,7 +218,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
                   transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                   className="relative z-10 text-amber-300"
                 >
-                  ✨
+                  <AppIcon name="Sparkles" size="sm" className="text-amber-300" />
                 </motion.span>
               </motion.button>
             </div>
@@ -345,7 +345,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
                   transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                   className="relative z-10 text-amber-300"
                 >
-                  ✨
+                  <AppIcon name="Sparkles" size="sm" className="text-amber-300" />
                 </motion.span>
               </motion.button>
             </div>
