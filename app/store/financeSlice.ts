@@ -69,15 +69,37 @@ const SEED_TRANSACTIONS: Transaction[] = [
 function loadFromStorage<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
   try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
+    const user = JSON.parse(localStorage.getItem("budgeta_current_user") || "{}");
+    if (!user.email) return fallback; // No user logged in, return fallback
+    
+    const userKey = `${key}_${user.email}`;
+    const raw = localStorage.getItem(userKey);
+    
+    // For new users, return empty data instead of seed data
+    if (!raw) {
+      if (key === "ff_transactions") return [] as T;
+      return fallback;
+    }
+    
+    return JSON.parse(raw);
   } catch {
     return fallback;
   }
 }
 
+function saveToStorage(key: string, data: any): void {
+  if (typeof window === "undefined") return;
+  try {
+    const user = JSON.parse(localStorage.getItem("budgeta_current_user") || "{}");
+    const userKey = user.email ? `${key}_${user.email}` : key;
+    localStorage.setItem(userKey, JSON.stringify(data));
+  } catch {
+    // Ignore errors
+  }
+}
+
 const initialState: FinanceState = {
-  transactions: loadFromStorage("ff_transactions", SEED_TRANSACTIONS),
+  transactions: loadFromStorage("ff_transactions", []), // Start with empty array for new users
   categories: loadFromStorage("ff_categories", DEFAULT_CATEGORIES),
   budget: loadFromStorage("ff_budget", DEFAULT_BUDGET),
 };
@@ -89,46 +111,42 @@ const financeSlice = createSlice({
     addTransaction: (state, action: PayloadAction<Omit<Transaction, "id">>) => {
       const newTransaction: Transaction = { ...action.payload, id: `t_${Date.now()}` };
       state.transactions.unshift(newTransaction);
-      if (typeof window !== "undefined") {
-        localStorage.setItem("ff_transactions", JSON.stringify(state.transactions));
-      }
+      saveToStorage("ff_transactions", state.transactions);
     },
     deleteTransaction: (state, action: PayloadAction<string>) => {
       state.transactions = state.transactions.filter(t => t.id !== action.payload);
-      if (typeof window !== "undefined") {
-        localStorage.setItem("ff_transactions", JSON.stringify(state.transactions));
-      }
+      saveToStorage("ff_transactions", state.transactions);
     },
     addCategory: (state, action: PayloadAction<Omit<Category, "id">>) => {
       const newCategory: Category = { ...action.payload, id: `cat_${Date.now()}` };
       state.categories.push(newCategory);
-      if (typeof window !== "undefined") {
-        localStorage.setItem("ff_categories", JSON.stringify(state.categories));
-      }
+      saveToStorage("ff_categories", state.categories);
     },
     updateCategory: (state, action: PayloadAction<{ id: string; updates: Partial<Category> }>) => {
       const index = state.categories.findIndex(c => c.id === action.payload.id);
       if (index !== -1) {
         state.categories[index] = { ...state.categories[index], ...action.payload.updates };
-        if (typeof window !== "undefined") {
-          localStorage.setItem("ff_categories", JSON.stringify(state.categories));
-        }
+        saveToStorage("ff_categories", state.categories);
       }
     },
     deleteCategory: (state, action: PayloadAction<string>) => {
       state.categories = state.categories.filter(c => c.id !== action.payload);
-      if (typeof window !== "undefined") {
-        localStorage.setItem("ff_categories", JSON.stringify(state.categories));
-      }
+      saveToStorage("ff_categories", state.categories);
     },
     updateBudget: (state, action: PayloadAction<Partial<BudgetSettings>>) => {
       state.budget = { ...state.budget, ...action.payload };
-      if (typeof window !== "undefined") {
-        localStorage.setItem("ff_budget", JSON.stringify(state.budget));
-      }
+      saveToStorage("ff_budget", state.budget);
+    },
+    initializeUserData: (state, action: PayloadAction<{ transactions: Transaction[]; categories: Category[]; budget: BudgetSettings }>) => {
+      state.transactions = action.payload.transactions;
+      state.categories = action.payload.categories;
+      state.budget = action.payload.budget;
+      saveToStorage("ff_transactions", state.transactions);
+      saveToStorage("ff_categories", state.categories);
+      saveToStorage("ff_budget", state.budget);
     },
   },
 });
 
-export const { addTransaction, deleteTransaction, addCategory, updateCategory, deleteCategory, updateBudget } = financeSlice.actions;
+export const { addTransaction, deleteTransaction, addCategory, updateCategory, deleteCategory, updateBudget, initializeUserData } = financeSlice.actions;
 export default financeSlice.reducer;

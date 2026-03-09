@@ -7,12 +7,16 @@ import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
 } from "recharts";
-import { TrendingUp, TrendingDown, Wallet, ChevronRight } from "lucide-react";
+import { TrendingUp, TrendingDown, Wallet, ChevronRight, Plus } from "lucide-react";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { addCoins, triggerCelebration } from "../store/gamificationSlice";
 import { selectTotalIncome, selectTotalExpenses, selectSafeToSpend, selectExpensesByCategory, selectCurrentMonth, selectMonthlyTransactions } from "../store/selectors";
 import { AppIcon } from "../components/AppIcon";
 import { SimpleConfetti } from "../components/SimpleConfetti";
+import { useUserData } from "../hooks/useUserData";
+
+const displayFont: React.CSSProperties = { fontFamily: "'Syne', sans-serif" };
+const bodyFont: React.CSSProperties = { fontFamily: "'Space Grotesk', sans-serif" };
 
 function fmt(n: number) { return "₦" + n.toLocaleString("en-NG"); }
 
@@ -33,6 +37,7 @@ const cardVariant = {
 };
 
 export function DashboardContent() {
+  useUserData(); // Initialize user-specific data
   const dispatch = useAppDispatch();
   const transactions = useAppSelector(state => state.finance.transactions);
   const categories = useAppSelector(state => state.finance.categories);
@@ -44,8 +49,22 @@ export function DashboardContent() {
   const currentMonth = selectCurrentMonth();
   const streak = useAppSelector(state => state.gamification.streak);
   const [testConfetti, setTestConfetti] = useState(false);
+  const [userName, setUserName] = useState("");
 
   const celebrationFired = useRef(false);
+
+  useEffect(() => {
+    // Get user name for personalized greeting
+    const user = JSON.parse(localStorage.getItem("budgeta_current_user") || "{}");
+    setUserName(user.firstName || "there");
+  }, []);
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 17) return "Good afternoon";
+    return "Good evening";
+  };
 
   useEffect(() => {
     const storageKey = "ff_weekly_cel_2026_03_w1";
@@ -103,6 +122,109 @@ export function DashboardContent() {
   const weeklyPct = Math.min((totalExpenses / weeklyBudget) * 100, 100);
   const weeklyStatus = weeklyPct < 75 ? "on-track" : weeklyPct < 100 ? "approaching" : "over";
 
+  // Show welcome message for new users with no transactions
+  const isNewUser = transactions.length === 0;
+
+  if (isNewUser) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="p-4 space-y-6 max-w-4xl mx-auto"
+      >
+        {/* Welcome Header */}
+        <div className="text-center py-8">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring" }}
+            className="w-20 h-20 rounded-2xl bg-emerald-100 flex items-center justify-center mx-auto mb-4"
+          >
+            <Wallet className="w-10 h-10 text-emerald-600" />
+          </motion.div>
+          <h1 style={{ ...displayFont, color: "#0F172A", fontWeight: 800, fontSize: "1.5rem" }}>
+            Welcome to Budgeta, {userName}! 🎉
+          </h1>
+          <p className="text-gray-600 mt-2" style={{ ...bodyFont, fontSize: "0.95rem" }}>
+            You're all set up! Let's start tracking your first transaction.
+          </p>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+                <Plus className="w-6 h-6 text-emerald-600" />
+              </div>
+              <div>
+                <h3 style={{ ...displayFont, fontWeight: 700, fontSize: "1rem", color: "#0F172A" }}>
+                  Add Your First Transaction
+                </h3>
+                <p className="text-gray-500">Start tracking your income and expenses</p>
+              </div>
+            </div>
+            <button className="w-full bg-emerald-600 text-white py-3 rounded-xl hover:bg-emerald-700 transition-colors font-semibold">
+              Add Transaction
+            </button>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                <AppIcon name="Target" size="lg" className="text-blue-600" />
+              </div>
+              <div>
+                <h3 style={{ ...displayFont, fontWeight: 700, fontSize: "1rem", color: "#0F172A" }}>
+                  Customize Your Budget
+                </h3>
+                <p className="text-gray-500">Adjust your spending limits and categories</p>
+              </div>
+            </div>
+            <Link href="/budget" className="block w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition-colors font-semibold text-center">
+              Manage Budget
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Tips */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-2xl p-6 border border-emerald-100"
+        >
+          <h3 style={{ ...displayFont, fontWeight: 700, fontSize: "1rem", color: "#0F172A", marginBottom: "1rem" }}>
+            💡 Quick Tips to Get Started
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              { icon: "⚡", title: "Log transactions daily", desc: "Build the habit of tracking every expense" },
+              { icon: "🎯", title: "Set realistic budgets", desc: "Start with achievable limits and adjust as needed" },
+              { icon: "🏆", title: "Earn rewards", desc: "Get coins for consistent tracking and meeting budgets" },
+            ].map((tip, i) => (
+              <div key={i} className="text-center">
+                <div className="text-2xl mb-2">{tip.icon}</div>
+                <h4 style={{ fontWeight: 600, color: "#0F172A", marginBottom: "0.5rem" }}>{tip.title}</h4>
+                <p className="text-gray-600 text-sm">{tip.desc}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
+    );
+  }
+
   const getCategoryForTx = (catId: string) => categories.find(c => c.id === catId);
 
   const allCategoriesGreen = categories.every(
@@ -116,12 +238,14 @@ export function DashboardContent() {
       variants={container}
       initial="hidden"
       animate="show"
-      className="p-4 md:p-6 space-y-5 max-w-full mx-auto"
+      className="p-3 md:p-4 space-y-4 max-w-full mx-auto"
     >
       <motion.div variants={cardVariant} className="flex items-center justify-between">
         <div>
-          <h1 style={{ color: "#0F172A" }}>Dashboard</h1>
-          <p className="text-gray-500" style={{ fontSize: "1.15rem" }}>March 2026 · Week 1</p>
+          <h1 style={{ ...displayFont, color: "#0F172A", fontWeight: 800, fontSize: "1.5rem" }}>
+            {getGreeting()}, {userName}!
+          </h1>
+          <p className="text-gray-500" style={{ ...bodyFont, fontSize: "0.9rem" }}>March 2026 · Week 1</p>
         </div>
       </motion.div>
 
@@ -136,11 +260,11 @@ export function DashboardContent() {
             : "linear-gradient(135deg, #7F1D1D, #991B1B)",
         }}
       >
-        <div className="p-5 relative overflow-hidden">
+        <div className="p-4 relative overflow-hidden">
           <motion.div
             animate={{ scale: [1, 1.4, 1], opacity: [0.1, 0.2, 0.1] }}
             transition={{ duration: 4, repeat: Infinity }}
-            className="absolute right-0 top-0 w-40 h-40 rounded-full"
+            className="absolute right-0 top-0 w-32 h-32 rounded-full"
             style={{ background: "radial-gradient(circle, rgba(255,255,255,0.15), transparent)", transform: "translate(30%, -30%)" }}
           />
           <div className="relative z-10 flex items-start justify-between">
@@ -152,14 +276,14 @@ export function DashboardContent() {
                 >
                   <AppIcon 
                     name={weeklyStatus === "on-track" ? "Bullseye" : weeklyStatus === "approaching" ? "TriangleExclamation" : "CircleExclamation"} 
-                    size="xl" 
+                    size="lg" 
                     className={weeklyStatus === "on-track" ? "text-emerald-300" : weeklyStatus === "approaching" ? "text-amber-300" : "text-red-300"}
                   />
                 </motion.div>
-                <span className="text-white/70" style={{ fontSize: "1.1rem" }}>Week 1 · Budget Check</span>
+                <span className="text-white/70" style={{ ...bodyFont, fontSize: "0.95rem" }}>Week 1 · Budget Check</span>
               </div>
               <div className="flex items-center gap-2">
-                <p className="text-white" style={{ fontWeight: 700, fontSize: "1.4rem" }}>
+                <p className="text-white" style={{ ...displayFont, fontWeight: 700, fontSize: "1rem" }}>
                   {weeklyStatus === "on-track"
                     ? "You're killing it this week!"
                     : weeklyStatus === "approaching"
@@ -168,7 +292,7 @@ export function DashboardContent() {
                 </p>
                 {weeklyStatus === "on-track" && <AppIcon name="Fire" size="lg" className="text-orange-400" />}
               </div>
-              <p className="text-white/60 mt-1" style={{ fontSize: "1.1rem" }}>
+              <p className="text-white/60 mt-1" style={{ ...bodyFont, fontSize: "0.95rem" }}>
                 {fmt(totalExpenses)} of {fmt(weeklyBudget)} weekly budget used
               </p>
               <div className="mt-3 bg-white/15 rounded-full h-2 overflow-hidden">
@@ -227,11 +351,11 @@ export function DashboardContent() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, type: "spring" }}
-              style={{ fontSize: "2rem", fontWeight: 700, color: "#fff", lineHeight: 1.1 }}
+              style={{ fontSize: "1.5rem", fontWeight: 700, color: "#fff", lineHeight: 1.1 }}
             >
               {fmt(Math.max(safeToSpend, 0))}
             </motion.p>
-            <p className="mt-2 text-white/50" style={{ fontSize: "1rem" }}>
+            <p className="mt-2 text-white/50" style={{ fontSize: "0.9rem" }}>
               {fmt(totalIncome)} income · {fmt(totalExpenses)} spent
             </p>
             <div className="mt-3 bg-white/10 rounded-full h-1.5 overflow-hidden">
@@ -256,8 +380,8 @@ export function DashboardContent() {
             </div>
             <span className="text-gray-500" style={{ fontSize: "1.1rem" }}>Income</span>
           </div>
-          <p style={{ fontSize: "1.4rem", fontWeight: 700, color: "#0F172A" }}>{fmt(totalIncome)}</p>
-          <p className="text-emerald-600 mt-1" style={{ fontSize: "1rem" }}>
+          <p style={{ fontSize: "1.2rem", fontWeight: 700, color: "#0F172A" }}>{fmt(totalIncome)}</p>
+          <p className="text-emerald-600 mt-1" style={{ fontSize: "0.9rem" }}>
             +{monthlyTx.filter(t => t.type === "income").length} this month
           </p>
         </motion.div>
@@ -273,8 +397,8 @@ export function DashboardContent() {
             </div>
             <span className="text-gray-500" style={{ fontSize: "1.1rem" }}>Expenses</span>
           </div>
-          <p style={{ fontSize: "1.4rem", fontWeight: 700, color: "#0F172A" }}>{fmt(totalExpenses)}</p>
-          <p className="text-red-500 mt-1" style={{ fontSize: "1rem" }}>
+          <p style={{ fontSize: "1.2rem", fontWeight: 700, color: "#0F172A" }}>{fmt(totalExpenses)}</p>
+          <p className="text-red-500 mt-1" style={{ fontSize: "0.9rem" }}>
             {monthlyTx.filter(t => t.type === "expense").length} transactions
           </p>
         </motion.div>

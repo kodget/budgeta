@@ -58,10 +58,23 @@ const SEED_COIN_HISTORY: CoinEntry[] = [
 function loadFromStorage<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
   try {
-    const raw = localStorage.getItem(key);
+    const user = JSON.parse(localStorage.getItem("budgeta_current_user") || "{}");
+    const userKey = user.email ? `${key}_${user.email}` : key;
+    const raw = localStorage.getItem(userKey);
     return raw ? JSON.parse(raw) : fallback;
   } catch {
     return fallback;
+  }
+}
+
+function saveToStorage(key: string, data: any): void {
+  if (typeof window === "undefined") return;
+  try {
+    const user = JSON.parse(localStorage.getItem("budgeta_current_user") || "{}");
+    const userKey = user.email ? `${key}_${user.email}` : key;
+    localStorage.setItem(userKey, JSON.stringify(data));
+  } catch {
+    // Ignore errors
   }
 }
 
@@ -91,9 +104,7 @@ const gamificationSlice = createSlice({
       state.availableCoins += action.payload.amount;
       state.coinHistory.unshift(entry);
       state.pendingCoinReward = action.payload.amount;
-      if (typeof window !== "undefined") {
-        localStorage.setItem("ff_gamification", JSON.stringify(state));
-      }
+      saveToStorage("ff_gamification", state);
     },
     claimMilestone: (state, action: PayloadAction<Milestone>) => {
       const milestone = action.payload;
@@ -114,9 +125,7 @@ const gamificationSlice = createSlice({
         type: "milestone",
         milestone,
       };
-      if (typeof window !== "undefined") {
-        localStorage.setItem("ff_gamification", JSON.stringify(state));
-      }
+      saveToStorage("ff_gamification", state);
     },
     dismissCelebration: (state) => {
       state.celebration = null;

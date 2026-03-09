@@ -1,10 +1,5 @@
-import { ClientLayout } from "./components/ClientLayout";
-import { DashboardContent } from "./components/DashboardContent";
+import { LandingPage } from "./components/LandingPage";
 
 export default function Home() {
-  return (
-    <ClientLayout>
-      <DashboardContent />
-    </ClientLayout>
-  );
+  return <LandingPage />;
 }

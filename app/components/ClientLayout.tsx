@@ -1,21 +1,31 @@
 "use client";
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// CLIENT LAYOUT COMPONENT
+// Main layout wrapper that provides navigation, sidebar, and user management
+// ═══════════════════════════════════════════════════════════════════════════════
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, ArrowLeftRight, Target,
-  Tag, Plus, TrendingUp, Menu, X, Trophy,
+  Tag, Plus, TrendingUp, Menu, X, Trophy, LogOut,
 } from "lucide-react";
 import { AddTransactionModal } from "./AddTransactionModal";
 import { CelebrationOverlay } from "./CelebrationOverlay";
 import { CoinFloater } from "./CoinFloater";
 import { useAppSelector } from "../store/hooks";
 import { AppIcon } from "./AppIcon";
+import { useUserData } from "../hooks/useUserData";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// NAVIGATION CONFIGURATION
+// Define all main navigation items with their routes and icons
+// ─────────────────────────────────────────────────────────────────────────────
 const navItems = [
-  { href: "/",             label: "Dashboard",    icon: LayoutDashboard, iconName: "ChartLine" },
+  { href: "/dashboard",     label: "Dashboard",    icon: LayoutDashboard, iconName: "ChartLine" },
   { href: "/transactions", label: "Transactions", icon: ArrowLeftRight, iconName: "ArrowRightArrowLeft" },
   { href: "/budget",       label: "Budget",       icon: Target, iconName: "Bullseye" },
   { href: "/categories",   label: "Categories",   icon: Tag, iconName: "Tag" },
@@ -23,19 +33,54 @@ const navItems = [
 ];
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
-  const [showModal, setShowModal] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [mounted, setMounted] = useState(false);
+  useUserData(); // Initialize user-specific data
+  // ─────────────────────────────────────────────────────────────────────────────
+  // COMPONENT STATE
+  // Manage UI state for modals, navigation, and user data
+  // ─────────────────────────────────────────────────────────────────────────────
+  const [showModal, setShowModal] = useState(false);           // Controls add transaction modal
+  const [mobileOpen, setMobileOpen] = useState(false);         // Controls mobile sidebar visibility
+  const [sidebarOpen, setSidebarOpen] = useState(true);        // Controls desktop sidebar visibility
+  const [mounted, setMounted] = useState(false);               // Prevents hydration mismatch
+  const [user, setUser] = useState<any>(null);                 // Current user data from localStorage
+  
+  // Redux state selectors for gamification data
   const availableCoins = useAppSelector(state => state.gamification.availableCoins);
   const streak = useAppSelector(state => state.gamification.streak);
   const pendingCoinReward = useAppSelector(state => state.gamification.pendingCoinReward);
+  
+  // Navigation hooks
   const pathname = usePathname();
+  const router = useRouter();
 
+  // ─────────────────────────────────────────────────────────────────────────────
+  // INITIALIZATION EFFECT
+  // Load user data from localStorage and set mounted state
+  // ─────────────────────────────────────────────────────────────────────────────
   useEffect(() => {
-    setMounted(true);
+    setMounted(true); // Prevent hydration mismatch
+    const currentUser = JSON.parse(localStorage.getItem("budgeta_current_user") || "{}");
+    setUser(currentUser);
   }, []);
 
+  // ─────────────────────────────────────────────────────────────────────────────
+  // LOGOUT HANDLER
+  // Clear user session and redirect to landing page
+  // ─────────────────────────────────────────────────────────────────────────────
+  const handleLogout = () => {
+    localStorage.removeItem("budgeta_current_user");
+    router.push("/");
+  };
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // UTILITY FUNCTION
+  // Generate user initials from full name for avatar display
+  // ─────────────────────────────────────────────────────────────────────────────
+  const getUserInitials = (fullName: string) => {
+    return fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+  };
+
+  // Prevent rendering until component is mounted (avoids hydration issues)
   if (!mounted) {
     return null;
   }
@@ -67,8 +112,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
                   <TrendingUp size={20} className="text-white" />
                 </motion.div>
                 <div>
-                  <span className="text-white block" style={{ fontWeight: 700, fontSize: "1.4rem" }}>Budgeta</span>
-                  <p className="text-white/50" style={{ fontSize: "0.875rem" }}>Personal Finance</p>
+                  <span className="text-white block" style={{ fontWeight: 700, fontSize: "1.2rem" }}>Budgeta</span>
+                  <p className="text-white/50" style={{ fontSize: "0.75rem" }}>Personal Finance</p>
                 </div>
               </div>
               <button 
@@ -82,12 +127,25 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             <div className="px-5 py-4 border-b border-white/10 space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-emerald-500/20 border-2 border-emerald-500/40 flex items-center justify-center flex-shrink-0">
-                  <span className="text-emerald-400" style={{ fontWeight: 700, fontSize: "1rem" }}>TU</span>
+                  <span className="text-emerald-400" style={{ fontWeight: 700, fontSize: "1rem" }}>
+                    {user?.fullName ? getUserInitials(user.fullName) : "U"}
+                  </span>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-white truncate" style={{ fontWeight: 600, fontSize: "1.15rem" }}>Tunde</p>
-                  <p className="text-white/50 truncate" style={{ fontSize: "0.95rem" }}>March 2026</p>
+                  <p className="text-white truncate" style={{ fontWeight: 600, fontSize: "1rem" }}>
+                    {user?.firstName || "User"}
+                  </p>
+                  <p className="text-white/50 truncate" style={{ fontSize: "0.85rem" }}>
+                    {user?.email || "user@example.com"}
+                  </p>
                 </div>
+                <button
+                  onClick={handleLogout}
+                  className="text-white/40 hover:text-white/70 p-2 hover:bg-white/10 rounded-lg transition-colors"
+                  title="Logout"
+                >
+                  <LogOut size={16} />
+                </button>
               </div>
 
               <div className="flex gap-2">
@@ -182,8 +240,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
                   <TrendingUp size={20} className="text-white" />
                 </motion.div>
                 <div>
-                  <span className="text-white block" style={{ fontWeight: 700, fontSize: "1.4rem" }}>Budgeta</span>
-                  <p className="text-white/50" style={{ fontSize: "0.875rem" }}>Personal Finance</p>
+                  <span className="text-white block" style={{ fontWeight: 700, fontSize: "1.2rem" }}>Budgeta</span>
+                  <p className="text-white/50" style={{ fontSize: "0.75rem" }}>Personal Finance</p>
                 </div>
               </div>
               <button 
@@ -197,12 +255,25 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             <div className="px-5 py-4 border-b border-white/10 space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-emerald-500/20 border-2 border-emerald-500/40 flex items-center justify-center flex-shrink-0">
-                  <span className="text-emerald-400" style={{ fontWeight: 700, fontSize: "1rem" }}>TU</span>
+                  <span className="text-emerald-400" style={{ fontWeight: 700, fontSize: "1rem" }}>
+                    {user?.fullName ? getUserInitials(user.fullName) : "U"}
+                  </span>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-white truncate" style={{ fontWeight: 600, fontSize: "1.15rem" }}>Tunde</p>
-                  <p className="text-white/50 truncate" style={{ fontSize: "0.95rem" }}>March 2026</p>
+                  <p className="text-white truncate" style={{ fontWeight: 600, fontSize: "1rem" }}>
+                    {user?.firstName || "User"}
+                  </p>
+                  <p className="text-white/50 truncate" style={{ fontSize: "0.85rem" }}>
+                    {user?.email || "user@example.com"}
+                  </p>
                 </div>
+                <button
+                  onClick={handleLogout}
+                  className="text-white/40 hover:text-white/70 p-2 hover:bg-white/10 rounded-lg transition-colors"
+                  title="Logout"
+                >
+                  <LogOut size={16} />
+                </button>
               </div>
 
               <div className="flex gap-2">
