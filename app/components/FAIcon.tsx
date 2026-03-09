@@ -69,5 +69,5 @@ interface IconProps {
 
 export function FAIcon({ name, size = '1x', className = '', style }: IconProps) {
   const icon = ICON_MAP[name] || ICON_MAP['Box'];
-  return <FontAwesomeIcon icon={icon} size={size as any} className={className} style={style} />;
+  return <FontAwesomeIcon icon={icon} size={size as any} className={className} style={style as any} />;
 }

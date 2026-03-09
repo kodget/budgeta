@@ -29,7 +29,7 @@ const container = {
 };
 const cardVariant = {
   hidden: { opacity: 0, y: 20 },
-  show:   { opacity: 1,  y: 0, transition: { duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] } },
+  show:   { opacity: 1,  y: 0, transition: { duration: 0.45, ease: "easeOut" as const } },
 };
 
 export function DashboardContent() {
@@ -330,7 +330,7 @@ export function DashboardContent() {
                       <Cell key={`cell-${entry.name}-${i}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(v: number) => fmt(v)} contentStyle={{ fontSize: "0.8rem", borderRadius: "8px" }} />
+                  <Tooltip formatter={(v) => fmt(v as number)} contentStyle={{ fontSize: "0.8rem", borderRadius: "8px" }} />
                 </PieChart>
               </ResponsiveContainer>
               <div className="space-y-1.5 mt-2">
@@ -433,7 +433,7 @@ export function DashboardContent() {
               <XAxis dataKey="day" tick={{ fontSize: 11, fill: "#9CA3AF" }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 10, fill: "#9CA3AF" }} axisLine={false} tickLine={false}
                 tickFormatter={v => v >= 1000 ? `${v / 1000}k` : v} />
-              <Tooltip formatter={(v: number) => [fmt(v), "Spent"]} contentStyle={{ fontSize: "0.8rem", borderRadius: "8px" }} />
+              <Tooltip formatter={(v) => [fmt(v as number), "Spent"]} contentStyle={{ fontSize: "0.8rem", borderRadius: "8px" }} />
               <Bar dataKey="amount" fill="#10B981" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
