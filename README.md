@@ -1,10 +1,10 @@
-# FinanceFlow
+# Budgeta
 
 A delightfully simple financial tracking application for Nigerian university students and young professionals. Built with intention, designed with empathy, crafted with precision.
 
 ## Introduction
 
-FinanceFlow is a lightweight financial tracking application designed primarily for university students in Lagos and young individuals who want a simple way to manage their money without the complexity of traditional finance apps.
+Budgeta is a lightweight financial tracking application designed primarily for university students in Lagos and young individuals who want a simple way to manage their money without the complexity of traditional finance apps.
 
 The product idea emerged from a user survey conducted for requirement elicitation, where participants shared their current money management habits, frustrations with existing solutions, and their expectations for a better financial tracking system.
 
@@ -15,7 +15,7 @@ The insights revealed several important patterns:
 - Existing apps are perceived as too complicated
 - Users primarily want to know how much money they have left
 
-Because of these findings, FinanceFlow focuses on simplicity, speed, and visual clarity. Instead of overwhelming users with complex financial analytics, the app helps users quickly understand their financial situation and build a habit of tracking their spending.
+Because of these findings, Budgeta focuses on simplicity, speed, and visual clarity. Instead of overwhelming users with complex financial analytics, the app helps users quickly understand their financial situation and build a habit of tracking their spending.
 
 ---
 
@@ -36,7 +36,7 @@ Students don't need complex financial analytics. They need:
 
 ## The Solution
 
-FinanceFlow is a visual-first financial tracker that prioritizes:
+Budgeta is a visual-first financial tracker that prioritizes:
 
 1. **Instant Clarity** — Dashboard shows remaining balance in large, bold text
 2. **Frictionless Logging** — Add transactions in 3 taps
@@ -57,7 +57,7 @@ Users see progress bars, not spreadsheets. Color-coded categories make spending 
 
 ### 3. Motivation Over Guilt
 
-Instead of shaming users for overspending, FinanceFlow celebrates small wins. Tracking consistently earns coins. Meeting budgets triggers celebrations. Milestones unlock rewards.
+Instead of shaming users for overspending, Budgeta celebrates small wins. Tracking consistently earns coins. Meeting budgets triggers celebrations. Milestones unlock rewards.
 
 ### 4. Context Over Generic
 
@@ -218,10 +218,10 @@ Different navigation patterns for different screen sizes ensure the best user ex
 
 ```bash
 # Clone the repository
-git clone https://github.com/kodget/financeflow.git
+git clone https://github.com/kodget/budgeta.git
 
 # Navigate to project
-cd financeflow
+cd budgeta
 
 # Install dependencies
 npm install
@@ -375,11 +375,11 @@ The user spends money on something such as food, transportation, or mobile data.
 
 ### Stage 2: Financial Confusion
 
-Later in the month, the user begins to wonder: "Where did all my money go?" This is the main problem FinanceFlow aims to solve.
+Later in the month, the user begins to wonder: "Where did all my money go?" This is the main problem Budgeta aims to solve.
 
 ### Stage 3: Logging an Expense
 
-The user opens FinanceFlow and records the transaction. The process takes only a few seconds because only essential information is required.
+The user opens Budgeta and records the transaction. The process takes only a few seconds because only essential information is required.
 
 ### Stage 4: Immediate Feedback
 

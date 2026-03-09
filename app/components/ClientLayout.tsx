@@ -67,7 +67,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
                   <TrendingUp size={20} className="text-white" />
                 </motion.div>
                 <div>
-                  <span className="text-white block" style={{ fontWeight: 700, fontSize: "1.4rem" }}>FinanceFlow</span>
+                  <span className="text-white block" style={{ fontWeight: 700, fontSize: "1.4rem" }}>Budgeta</span>
                   <p className="text-white/50" style={{ fontSize: "0.875rem" }}>Personal Finance</p>
                 </div>
               </div>
@@ -182,7 +182,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
                   <TrendingUp size={20} className="text-white" />
                 </motion.div>
                 <div>
-                  <span className="text-white block" style={{ fontWeight: 700, fontSize: "1.4rem" }}>FinanceFlow</span>
+                  <span className="text-white block" style={{ fontWeight: 700, fontSize: "1.4rem" }}>Budgeta</span>
                   <p className="text-white/50" style={{ fontSize: "0.875rem" }}>Personal Finance</p>
                 </div>
               </div>
@@ -301,7 +301,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center lg:hidden">
               <TrendingUp size={16} className="text-white" />
             </div>
-            <span style={{ fontWeight: 700, fontSize: "1.25rem", color: "#0F172A" }} className="lg:hidden">FinanceFlow</span>
+            <span style={{ fontWeight: 700, fontSize: "1.25rem", color: "#0F172A" }} className="lg:hidden">Budgeta</span>
           </div>
           <div className="flex items-center gap-3 ml-auto">
             <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-50 border border-amber-200">
