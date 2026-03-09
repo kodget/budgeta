@@ -115,5 +115,5 @@ export function AppIcon({ name, size = 'lg', className = '', style }: IconProps)
   const iconName = EMOJI_TO_ICON[name] || name;
   const icon = ICON_MAP[iconName] || ICON_MAP['Box'];
   
-  return <FontAwesomeIcon icon={icon} size={size} className={className} style={style} />;
+  return <FontAwesomeIcon icon={icon} size={size} className={className} style={style as any} />;
 }
