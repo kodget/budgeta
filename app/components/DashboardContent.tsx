@@ -284,10 +284,10 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
                     className={weeklyStatus === "on-track" ? "text-emerald-300" : weeklyStatus === "approaching" ? "text-amber-300" : "text-red-300"}
                   />
                 </motion.div>
-                <span className="text-white/70" style={{ ...bodyFont, fontSize: "0.95rem" }}>Week 1 · Budget Check</span>
+                <span className="text-white/70 text-sm">Week 1 · Budget Check</span>
               </div>
               <div className="flex items-center gap-2">
-                <p className="text-white" style={{ ...displayFont, fontWeight: 700, fontSize: "1rem" }}>
+                <p className="text-white font-bold text-base">
                   {weeklyStatus === "on-track"
                     ? "You're killing it this week!"
                     : weeklyStatus === "approaching"
@@ -296,7 +296,7 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
                 </p>
                 {weeklyStatus === "on-track" && <AppIcon name="Fire" size="lg" className="text-orange-400" />}
               </div>
-              <p className="text-white/60 mt-1" style={{ ...bodyFont, fontSize: "0.95rem" }}>
+              <p className="text-white/60 mt-1 text-sm">
                 {fmt(totalExpenses)} of {fmt(weeklyBudget)} weekly budget used
               </p>
               <div className="mt-3 bg-white/15 rounded-full h-2 overflow-hidden">
@@ -359,7 +359,7 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
             >
               {fmt(Math.max(safeToSpend, 0))}
             </motion.p>
-            <p className="mt-2 text-white/50" style={{ fontSize: "0.9rem" }}>
+            <p className="mt-2 text-white/50 text-sm">
               {fmt(totalIncome)} income · {fmt(totalExpenses)} spent
             </p>
             <div className="mt-3 bg-white/10 rounded-full h-1.5 overflow-hidden">
@@ -385,7 +385,7 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
             <span className="text-gray-500" style={{ fontSize: "1.1rem" }}>Income</span>
           </div>
           <p style={{ fontSize: "1.2rem", fontWeight: 700, color: "#0F172A" }}>{fmt(totalIncome)}</p>
-          <p className="text-emerald-600 mt-1" style={{ fontSize: "0.9rem" }}>
+          <p className="text-emerald-600 mt-1 text-sm">
             +{monthlyTx.filter(t => t.type === "income").length} this month
           </p>
         </motion.div>
@@ -402,7 +402,7 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
             <span className="text-gray-500" style={{ fontSize: "1.1rem" }}>Expenses</span>
           </div>
           <p style={{ fontSize: "1.2rem", fontWeight: 700, color: "#0F172A" }}>{fmt(totalExpenses)}</p>
-          <p className="text-red-500 mt-1" style={{ fontSize: "0.9rem" }}>
+          <p className="text-red-500 mt-1 text-sm">
             {monthlyTx.filter(t => t.type === "expense").length} transactions
           </p>
         </motion.div>
@@ -424,7 +424,7 @@ export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () =
               </p>
               <AppIcon name="Fire" size="lg" className="text-orange-500" />
             </div>
-            <p className="text-white/50" style={{ fontSize: "1rem" }}>All categories are in the green zone. Keep the momentum!</p>
+            <p className="text-white/50 text-base">All categories are in the green zone. Keep the momentum!</p>
           </div>
           <Link
             href="/rewards"
