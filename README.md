@@ -455,7 +455,7 @@ MIT License — Feel free to learn from this project.
 
 ---
 
-## Acknowledgments
+## Conclusion
 
 Built as an assessment project to demonstrate:
 
