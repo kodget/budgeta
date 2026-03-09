@@ -36,7 +36,7 @@ const cardVariant = {
   show:   { opacity: 1,  y: 0, transition: { duration: 0.45, ease: "easeOut" as const } },
 };
 
-export function DashboardContent() {
+export function DashboardContent({ onAddTransaction }: { onAddTransaction?: () => void }) {
   useUserData(); // Initialize user-specific data
   const dispatch = useAppDispatch();
   const transactions = useAppSelector(state => state.finance.transactions);
@@ -169,7 +169,10 @@ export function DashboardContent() {
                 <p className="text-gray-500">Start tracking your income and expenses</p>
               </div>
             </div>
-            <button className="w-full bg-emerald-600 text-white py-3 rounded-xl hover:bg-emerald-700 transition-colors font-semibold">
+            <button 
+              onClick={onAddTransaction}
+              className="w-full bg-emerald-600 text-white py-3 rounded-xl hover:bg-emerald-700 transition-colors font-semibold"
+            >
               Add Transaction
             </button>
           </motion.div>

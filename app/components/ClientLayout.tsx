@@ -16,6 +16,7 @@ import {
 import { AddTransactionModal } from "./AddTransactionModal";
 import { CelebrationOverlay } from "./CelebrationOverlay";
 import { CoinFloater } from "./CoinFloater";
+import { DashboardContent } from "./DashboardContent";
 import { useAppSelector } from "../store/hooks";
 import { AppIcon } from "./AppIcon";
 import { useUserData } from "../hooks/useUserData";
@@ -104,7 +105,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             animate={{ x: 0 }}
             exit={{ x: -320 }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-y-0 left-0 z-50 w-80 bg-[#0F172A] flex flex-col shadow-2xl lg:hidden"
+            className="fixed inset-y-0 left-0 z-50 w-64 bg-[#0F172A] flex flex-col shadow-2xl lg:hidden"
           >
             <div className="flex items-center justify-between px-6 py-6 border-b border-white/10">
               <div className="flex items-center gap-3">
@@ -232,7 +233,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             animate={{ x: 0 }}
             exit={{ x: -384 }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="hidden lg:flex relative inset-y-0 left-0 z-50 w-96 bg-[#0F172A] flex-col shadow-2xl"
+            className="hidden lg:flex relative inset-y-0 left-0 z-50 w-72 bg-[#0F172A] flex-col shadow-2xl"
           >
             <div className="flex items-center justify-between px-6 py-6 border-b border-white/10">
               <div className="flex items-center gap-3">
@@ -353,7 +354,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       </AnimatePresence>
 
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-        <header className="bg-white border-b border-gray-200 shadow-sm px-4 lg:px-6 py-4 flex items-center gap-4 z-10">
+        <header className="bg-white border-b border-gray-200 shadow-sm px-3 lg:px-4 py-3 flex items-center gap-3 z-10">
           {!sidebarOpen && (
             <button 
               onClick={() => setSidebarOpen(true)} 
@@ -369,45 +370,51 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             <Menu size={20} />
           </button>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center lg:hidden">
-              <TrendingUp size={16} className="text-white" />
+            <div className="w-7 h-7 rounded-lg bg-emerald-500 flex items-center justify-center lg:hidden">
+              <TrendingUp size={14} className="text-white" />
             </div>
-            <span style={{ fontWeight: 700, fontSize: "1.25rem", color: "#0F172A" }} className="lg:hidden">Budgeta</span>
+            <span style={{ fontWeight: 700, fontSize: "1.1rem", color: "#0F172A" }} className="lg:hidden">Budgeta</span>
           </div>
           <div className="flex items-center gap-3 ml-auto">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-50 border border-amber-200">
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-50 border border-amber-200">
               <AppIcon name="Coins" className="text-amber-600" />
-              <span style={{ fontSize: "1rem", fontWeight: 700, color: "#92400E" }}>{availableCoins}</span>
+              <span style={{ fontSize: "0.9rem", fontWeight: 700, color: "#92400E" }}>{availableCoins}</span>
             </div>
             <motion.button 
               whileTap={{ scale: 0.95 }} 
               onClick={() => setShowModal(true)} 
-              className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl px-4 py-2.5 transition-colors shadow-sm"
+              className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg px-3 py-2 transition-colors shadow-sm"
             >
-              <Plus size={18} />
-              <span style={{ fontSize: "1rem", fontWeight: 600 }} className="hidden sm:inline">Add</span>
+              <Plus size={16} />
+              <span style={{ fontSize: "0.9rem", fontWeight: 600 }} className="hidden sm:inline">Add</span>
             </motion.button>
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto bg-[#F8FAFC] pb-20 lg:pb-0">
-          <div className="p-4 lg:p-6">{children}</div>
+        <main className="flex-1 overflow-y-auto bg-[#F8FAFC] pb-16 lg:pb-0">
+          <div className="p-3 lg:p-4">
+            {pathname === '/dashboard' ? (
+              <DashboardContent onAddTransaction={() => setShowModal(true)} />
+            ) : (
+              children
+            )}
+          </div>
         </main>
 
         <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-30">
-          <div className="flex items-center justify-around px-2 py-3">
+          <div className="flex items-center justify-around px-1.5 py-2">
             {navItems.map(({ href, label, icon: Icon }) => {
               const isActive = pathname === href;
               return (
                 <Link
                   key={href}
                   href={href}
-                  className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${
+                  className={`flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-lg transition-all ${
                     isActive ? "text-emerald-600" : "text-gray-500"
                   }`}
                 >
-                  <Icon size={24} />
-                  <span style={{ fontSize: "0.7rem", fontWeight: 600 }}>{label}</span>
+                  <Icon size={20} />
+                  <span style={{ fontSize: "0.65rem", fontWeight: 600 }}>{label}</span>
                 </Link>
               );
             })}

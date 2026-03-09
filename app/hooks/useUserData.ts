@@ -17,6 +17,7 @@ export function useUserData() {
       const existingTransactions = localStorage.getItem(`ff_transactions_${userEmail}`);
       const existingCategories = localStorage.getItem(`ff_categories_${userEmail}`);
       const existingBudget = localStorage.getItem(`ff_budget_${userEmail}`);
+      const existingGamification = localStorage.getItem(`ff_gamification_${userEmail}`);
       
       if (!existingTransactions || !existingCategories || !existingBudget) {
         // Initialize with empty/default data
@@ -39,6 +40,27 @@ export function useUserData() {
           categories: defaultCategories,
           budget: defaultBudget
         }));
+      }
+      
+      // Initialize gamification data for new users
+      if (!existingGamification) {
+        const freshGamificationData = {
+          totalCoinsEarned: 0,
+          availableCoins: 0,
+          streak: 0,
+          coinHistory: [],
+          claimedMilestones: [],
+          celebration: null,
+          pendingCoinReward: null,
+        };
+        localStorage.setItem(`ff_gamification_${userEmail}`, JSON.stringify(freshGamificationData));
+      } else {
+        // Clear any existing celebration for existing users to prevent annoying popups
+        const existingData = JSON.parse(existingGamification);
+        if (existingData.celebration) {
+          existingData.celebration = null;
+          localStorage.setItem(`ff_gamification_${userEmail}`, JSON.stringify(existingData));
+        }
       }
     }
   }, [dispatch]);

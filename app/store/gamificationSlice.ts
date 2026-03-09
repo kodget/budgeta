@@ -79,11 +79,11 @@ function saveToStorage(key: string, data: any): void {
 }
 
 const initialState: GamificationState = loadFromStorage("ff_gamification", {
-  totalCoinsEarned: 1097,
-  availableCoins: 847,
-  streak: 3,
-  coinHistory: SEED_COIN_HISTORY,
-  claimedMilestones: ["m1"],
+  totalCoinsEarned: 0,
+  availableCoins: 0,
+  streak: 0,
+  coinHistory: [],
+  claimedMilestones: [],
   celebration: null,
   pendingCoinReward: null,
 });

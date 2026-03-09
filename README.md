@@ -455,6 +455,54 @@ MIT License — Feel free to learn from this project.
 
 ---
 
+## Development Summary
+
+### What I Built
+
+Budgeta is a complete financial tracking MVP with:
+- **User Authentication & Onboarding** — Sign up/in flow with personalized setup
+- **Transaction Management** — Quick add modal, categorization, visual feedback
+- **Budget Tracking** — Global and category-based budgeting with progress indicators
+- **Gamification System** — Coin rewards, streaks, milestones with celebration animations
+- **Responsive Design** — Mobile-first with adaptive navigation patterns
+- **Data Persistence** — User-specific localStorage with proper isolation
+
+### Key Design Choices
+
+1. **User-Centric Architecture** — Each user gets isolated data storage preventing cross-contamination
+2. **Visual-First Dashboard** — Prioritized remaining balance and visual progress over complex analytics
+3. **Micro-Interactions** — Custom confetti system, magnetic buttons, smooth animations for delight
+4. **Performance Focus** — Memoized selectors, optimized re-renders, efficient state management
+5. **Typography Consistency** — Unified Syne/Space Grotesk fonts across landing and app
+
+### What I'd Improve With More Time
+
+1. **Advanced Analytics** — Spending trends, category insights, predictive budgeting
+2. **Bank Integration** — Connect to Nigerian banks via Mono/Paystack APIs
+3. **PWA Features** — Offline support, push notifications, installable app
+4. **Testing Suite** — Unit tests, integration tests, E2E testing with Playwright
+5. **Accessibility Audit** — Screen reader optimization, keyboard navigation improvements
+
+### Challenges Faced
+
+1. **User Data Isolation** — Initially users shared data; solved with email-based localStorage keys
+2. **Hydration Mismatches** — SSR/client conflicts with localStorage; fixed with mounted state pattern
+3. **Modal State Management** — Complex prop drilling; resolved with centralized layout state
+4. **Responsive Navigation** — Different patterns for mobile/desktop; created adaptive components
+5. **Font Consistency** — Landing page looked better; unified typography across entire app
+6. **Celebration Timing** — Annoying auto-popups; implemented smart celebration clearing
+
+### Time Spent: ~15 Hours
+
+- **Planning & Research**: 2 hours
+- **Core Features Development**: 8 hours
+- **UI/UX Polish & Animations**: 3 hours
+- **Bug Fixes & Optimization**: 2 hours
+
+The project demonstrates full-stack thinking, user experience focus, and attention to detail within a realistic timeframe.
+
+---
+
 ## Conclusion
 
 Built as an assessment project to demonstrate:
