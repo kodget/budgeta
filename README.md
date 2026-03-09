@@ -218,10 +218,10 @@ Different navigation patterns for different screen sizes ensure the best user ex
 
 ```bash
 # Clone the repository
-git clone https://github.com/kodget/budgeta.git
+git clone https://github.com/kodget/financeflow.git
 
 # Navigate to project
-cd budgeta
+cd financeflow
 
 # Install dependencies
 npm install
